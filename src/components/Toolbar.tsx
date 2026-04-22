@@ -1,6 +1,7 @@
 import { useRef, useState } from "react";
 import { useStore } from "../store";
 import { exportJava, exportJson, exportProject, type PerkFile } from "../export";
+import { parseProject } from "../import";
 import type { Edge } from "reactflow";
 import type { PerkNode } from "../store";
 
@@ -31,14 +32,15 @@ export const Toolbar = () => {
   const loadProject = async (file: File) => {
     const text = await file.text();
     try {
-      const parsed = JSON.parse(text);
-      const loadedNodes: PerkNode[] = parsed.nodes.map((n: PerkNode) => ({
+      const parsed: unknown = JSON.parse(text);
+      const project = parseProject(parsed);
+      const loadedNodes: PerkNode[] = project.nodes.map((n) => ({
         id: n.id,
         position: n.position,
         data: n.data,
         type: "perk",
       }));
-      const loadedEdges: Edge[] = parsed.edges.map((e: Edge) => ({
+      const loadedEdges: Edge[] = project.edges.map((e) => ({
         id: e.id,
         source: e.source,
         target: e.target,
