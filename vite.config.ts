@@ -25,6 +25,7 @@ const injectProdCsp = (): Plugin => ({
   },
 })
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/AstralSorcery-Perk-Editor/' : '/',
   plugins: [react(), injectProdCsp()],
-})
+}))

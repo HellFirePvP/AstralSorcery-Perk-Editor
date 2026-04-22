@@ -3,6 +3,8 @@
 A browser-based drag-and-drop editor for designing the perk tree for the
 [Astral Sorcery](https://github.com/HellFirePvP/AstralSorcery-1.18) Minecraft mod.
 
+Live: <https://hellfirepvp.github.io/AstralSorcery-Perk-Editor/>
+
 Exports the tree as:
 
 - **Per-perk JSON files** — drop-in for `src/generated/resources/data/astralsorcery/perks/*.json`

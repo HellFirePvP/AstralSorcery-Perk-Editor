@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useStore } from "../store";
-import { exportJava, exportJson, exportProject, type PerkFile } from "../export";
+import { exportJava, exportJson, exportLang, exportProject, type PerkFile } from "../export";
 import { parseProject } from "../import";
 import type { Edge } from "reactflow";
 import type { PerkNode } from "../store";
@@ -8,6 +8,7 @@ import type { PerkNode } from "../store";
 type ExportView =
   | { kind: "json"; files: PerkFile[] }
   | { kind: "java"; source: string }
+  | { kind: "lang"; source: string }
   | null;
 
 export const Toolbar = () => {
@@ -71,6 +72,9 @@ export const Toolbar = () => {
         <button onClick={() => setView({ kind: "java", source: exportJava(nodes, edges) })}>
           Export Java DSL
         </button>
+        <button onClick={() => setView({ kind: "lang", source: exportLang(nodes) })}>
+          Export en_us.json
+        </button>
         <button onClick={downloadProject}>Save project</button>
         <button onClick={() => fileInput.current?.click()}>Load project</button>
         <input
@@ -90,7 +94,13 @@ export const Toolbar = () => {
         <div className="modal-backdrop" onClick={() => setView(null)}>
           <div className="modal" onClick={(e) => e.stopPropagation()}>
             <div className="modal-head">
-              <h3>{view.kind === "json" ? "JSON export" : "Java DSL export"}</h3>
+              <h3>
+                {view.kind === "json"
+                  ? "JSON export"
+                  : view.kind === "java"
+                  ? "Java DSL export"
+                  : "en_us.json export"}
+              </h3>
               <button onClick={() => setView(null)}>close</button>
             </div>
             {view.kind === "json" ? (

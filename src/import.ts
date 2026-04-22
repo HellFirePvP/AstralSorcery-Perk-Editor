@@ -125,6 +125,11 @@ const parseRequirement = (raw: unknown, path: string): Requirement => {
   throw new ParseError(`${path}.type: unknown requirement type "${type}"`);
 };
 
+const optionalString = (v: unknown, path: string): string | undefined => {
+  if (v === undefined || v === null) return undefined;
+  return asString(v, path);
+};
+
 const parsePerkData = (raw: unknown, path: string): PerkData => {
   const o = asObject(raw, path);
   guardKeys(o, path);
@@ -155,6 +160,8 @@ const parsePerkData = (raw: unknown, path: string): PerkData => {
       parseRequirement(r, `${path}.requirements[${i}]`)
     ),
     constellation,
+    display_name: optionalString(o.display_name, `${path}.display_name`),
+    description: optionalString(o.description, `${path}.description`),
   };
 };
 

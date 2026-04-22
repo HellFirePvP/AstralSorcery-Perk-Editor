@@ -144,6 +144,21 @@ export const exportJava = (nodes: PerkNode[], edges: Edge[]): string => {
   ].join("\n");
 };
 
+export const exportLang = (nodes: PerkNode[]): string => {
+  const entries: [string, string][] = [];
+  for (const n of nodes) {
+    const base = n.data.name_key;
+    const name = n.data.display_name?.trim();
+    const desc = n.data.description?.trim();
+    if (name) entries.push([`${base}.name`, name]);
+    if (desc) entries.push([`${base}.description`, desc]);
+  }
+  entries.sort(([a], [b]) => a.localeCompare(b));
+  const obj: Record<string, string> = {};
+  for (const [k, v] of entries) obj[k] = v;
+  return JSON.stringify(obj, null, 2);
+};
+
 export const exportProject = (nodes: PerkNode[], edges: Edge[]) => ({
   version: 1,
   nodes: nodes.map((n) => ({ id: n.id, position: n.position, data: n.data })),

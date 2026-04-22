@@ -101,6 +101,25 @@ export const Inspector = () => {
       </label>
 
       <label>
+        Display name (en_us)
+        <input
+          value={data.display_name ?? ""}
+          onChange={(e) => updatePerk(node.id, { display_name: e.target.value })}
+          placeholder="e.g. Root: Aevitas"
+        />
+      </label>
+
+      <label>
+        Description (en_us)
+        <textarea
+          value={data.description ?? ""}
+          onChange={(e) => updatePerk(node.id, { description: e.target.value })}
+          rows={3}
+          placeholder="Shown in the perk tooltip"
+        />
+      </label>
+
+      <label>
         Category
         <select
           value={data.category}

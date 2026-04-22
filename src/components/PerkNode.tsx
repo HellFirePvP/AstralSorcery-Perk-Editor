@@ -18,7 +18,7 @@ export const PerkNode = ({ data, selected }: NodeProps<PerkData>) => {
   const constColor = data.constellation
     ? CONSTELLATIONS.find((c) => c.key === data.constellation)?.color
     : undefined;
-  const shortLabel = data.registry_name.replace(/^astralsorcery:/, "");
+  const shortLabel = data.display_name?.trim() || data.registry_name.replace(/^astralsorcery:/, "");
   const size = r * 2 + 12;
 
   return (

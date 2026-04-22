@@ -29,4 +29,6 @@ export type PerkData = {
   modifiers: ModifierEntry[];
   requirements: Requirement[];
   constellation?: ConstellationKey;
+  display_name?: string;
+  description?: string;
 };

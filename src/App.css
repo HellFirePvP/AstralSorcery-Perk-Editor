@@ -126,7 +126,8 @@ html, body, #root {
 }
 
 .inspector input,
-.inspector select {
+.inspector select,
+.inspector textarea {
   display: block;
   width: 100%;
   margin-top: 3px;
@@ -136,7 +137,9 @@ html, body, #root {
   border: 1px solid #2a3250;
   border-radius: 3px;
   font-size: 12px;
+  font-family: inherit;
   text-transform: none;
+  resize: vertical;
 }
 
 .inspector-head {
