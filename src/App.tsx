@@ -5,6 +5,7 @@ import ReactFlow, {
   ConnectionMode,
   Controls,
   MiniMap,
+  useStore as useRfStore,
   type NodeTypes,
 } from "reactflow";
 import "reactflow/dist/style.css";
@@ -18,6 +19,26 @@ import "./App.css";
 // 1 exported unit = 100 canvas px (see SCALE in export.ts).
 const GRID_MAJOR = 100;
 const GRID_MINOR = 25;
+
+const AxesOverlay = () => {
+  const [tx, ty, zoom] = useRfStore((s) => s.transform);
+  return (
+    <svg
+      style={{
+        position: "absolute",
+        inset: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+        zIndex: 4,
+      }}
+    >
+      <line x1={0} y1={ty} x2="100%" y2={ty} stroke="#e9d99a" strokeWidth={1} opacity={0.55} />
+      <line x1={tx} y1={0} x2={tx} y2="100%" stroke="#e9d99a" strokeWidth={1} opacity={0.55} />
+      <circle cx={tx} cy={ty} r={3 * Math.min(1, zoom)} fill="#e9d99a" opacity={0.9} />
+    </svg>
+  );
+};
 
 const App = () => {
   const nodes = useStore((s) => s.nodes);
@@ -86,6 +107,7 @@ const App = () => {
               lineWidth={0.7}
               color="#2a3460"
             />
+            <AxesOverlay />
             <MiniMap pannable zoomable maskColor="rgba(10,14,24,0.8)" nodeColor="#7aa6da" />
             <Controls />
           </ReactFlow>
