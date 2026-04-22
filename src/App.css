@@ -1,0 +1,306 @@
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  background: #0a0e18;
+  color: #e5e8f0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 13px;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 14px;
+  background: #131828;
+  border-bottom: 1px solid #232a40;
+}
+
+.toolbar .title {
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  color: #e9d99a;
+}
+
+.toolbar .stat {
+  color: #8a92a8;
+  font-size: 12px;
+}
+
+.toolbar .spacer {
+  flex: 1;
+}
+
+.body {
+  flex: 1;
+  display: flex;
+  min-height: 0;
+}
+
+.panel {
+  width: 240px;
+  background: #0f1323;
+  border-right: 1px solid #232a40;
+  padding: 12px;
+  overflow-y: auto;
+}
+
+.panel.inspector {
+  border-right: none;
+  border-left: 1px solid #232a40;
+  width: 320px;
+}
+
+.panel h3 {
+  margin: 0 0 10px;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  color: #8a92a8;
+}
+
+.panel h4 {
+  margin: 0;
+  font-size: 12px;
+  color: #c6cde0;
+}
+
+.panel .hint {
+  color: #6d7795;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.palette-group {
+  margin-bottom: 12px;
+}
+
+.palette-group-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #6d7795;
+  margin-bottom: 4px;
+}
+
+.palette-item {
+  width: 100%;
+  text-align: left;
+  padding: 5px 8px;
+  margin-bottom: 2px;
+  font-size: 12px;
+  background: #1a2036;
+  color: #c6cde0;
+  border: 1px solid #232a40;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.palette-item:hover {
+  background: #222a48;
+  border-color: #3a4570;
+}
+
+.canvas {
+  flex: 1;
+  min-width: 0;
+  background: #070912;
+}
+
+.inspector label {
+  display: block;
+  font-size: 11px;
+  color: #8a92a8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 10px;
+}
+
+.inspector input,
+.inspector select {
+  display: block;
+  width: 100%;
+  margin-top: 3px;
+  padding: 5px 7px;
+  background: #0a0e1a;
+  color: #e5e8f0;
+  border: 1px solid #2a3250;
+  border-radius: 3px;
+  font-size: 12px;
+  text-transform: none;
+}
+
+.inspector-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.section {
+  margin-top: 14px;
+  padding-top: 10px;
+  border-top: 1px solid #232a40;
+}
+
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.row {
+  display: flex;
+  gap: 4px;
+  margin-top: 4px;
+  align-items: center;
+}
+
+.row input,
+.row select {
+  margin-top: 0;
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+.row .tag {
+  font-size: 10px;
+  background: #1a2036;
+  border: 1px solid #232a40;
+  color: #8a92a8;
+  padding: 2px 6px;
+  border-radius: 3px;
+}
+
+button {
+  background: #1a2036;
+  color: #e5e8f0;
+  border: 1px solid #2a3250;
+  border-radius: 3px;
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+button:hover {
+  background: #242c4a;
+}
+
+button.danger {
+  color: #e68090;
+  border-color: #3a2030;
+}
+
+button.danger:hover {
+  background: #3a1828;
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #0f1323;
+  border: 1px solid #2a3250;
+  border-radius: 6px;
+  width: 900px;
+  max-width: 95vw;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 14px 18px;
+}
+
+.modal-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.modal-head h3 {
+  margin: 0;
+  font-size: 14px;
+}
+
+.modal pre {
+  flex: 1;
+  overflow: auto;
+  background: #070912;
+  padding: 12px;
+  border-radius: 4px;
+  font-family: "SF Mono", Consolas, "Liberation Mono", monospace;
+  font-size: 12px;
+  line-height: 1.5;
+  color: #d0d6e6;
+  margin: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+  max-height: 80px;
+  overflow-y: auto;
+}
+
+.tab {
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+.tab.active {
+  background: #2a3460;
+  border-color: #3a4570;
+}
+
+.filepath {
+  font-family: "SF Mono", Consolas, monospace;
+  font-size: 11px;
+  color: #8a92a8;
+  margin-bottom: 4px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  justify-content: flex-end;
+}
+
+.react-flow__edge-path {
+  stroke: #8ab4ff;
+  stroke-width: 1.5;
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+.react-flow__minimap {
+  background: #070912 !important;
+  border: 1px solid #232a40;
+}
+
+.react-flow__controls button {
+  background: #131828;
+  border: 1px solid #232a40;
+  color: #c6cde0;
+}
