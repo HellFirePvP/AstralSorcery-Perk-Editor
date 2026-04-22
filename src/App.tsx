@@ -22,6 +22,9 @@ const GRID_MINOR = 25;
 
 const AxesOverlay = () => {
   const [tx, ty, zoom] = useRfStore((s) => s.transform);
+  const offset = (GRID_MAJOR / 2) * zoom;
+  const ox = tx + offset;
+  const oy = ty + offset;
   return (
     <svg
       style={{
@@ -33,9 +36,9 @@ const AxesOverlay = () => {
         zIndex: 4,
       }}
     >
-      <line x1={0} y1={ty} x2="100%" y2={ty} stroke="#e9d99a" strokeWidth={1} opacity={0.55} />
-      <line x1={tx} y1={0} x2={tx} y2="100%" stroke="#e9d99a" strokeWidth={1} opacity={0.55} />
-      <circle cx={tx} cy={ty} r={3 * Math.min(1, zoom)} fill="#e9d99a" opacity={0.9} />
+      <line x1={0} y1={oy} x2="100%" y2={oy} stroke="#e9d99a" strokeWidth={1} opacity={0.55} />
+      <line x1={ox} y1={0} x2={ox} y2="100%" stroke="#e9d99a" strokeWidth={1} opacity={0.55} />
+      <circle cx={ox} cy={oy} r={3 * Math.min(1, zoom)} fill="#e9d99a" opacity={0.9} />
     </svg>
   );
 };
