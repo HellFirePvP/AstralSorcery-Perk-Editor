@@ -40,6 +40,8 @@ const AxesOverlay = () => {
   );
 };
 
+type NodeMenu = { id: string; x: number; y: number } | null;
+
 const App = () => {
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
@@ -47,10 +49,13 @@ const App = () => {
   const onEdgesChange = useStore((s) => s.onEdgesChange);
   const onConnect = useStore((s) => s.onConnect);
   const selectNode = useStore((s) => s.selectNode);
+  const duplicatePerk = useStore((s) => s.duplicatePerk);
+  const deletePerk = useStore((s) => s.deletePerk);
 
   const nodeTypes: NodeTypes = useMemo(() => ({ perk: PerkNode }), []);
 
   const [shiftHeld, setShiftHeld] = useState(false);
+  const [nodeMenu, setNodeMenu] = useState<NodeMenu>(null);
   useEffect(() => {
     const onDown = (e: KeyboardEvent) => { if (e.key === "Shift") setShiftHeld(true); };
     const onUp = (e: KeyboardEvent) => { if (e.key === "Shift") setShiftHeld(false); };
@@ -69,7 +74,18 @@ const App = () => {
     (_: unknown, node: { id: string }) => selectNode(node.id),
     [selectNode]
   );
-  const handlePaneClick = useCallback(() => selectNode(null), [selectNode]);
+  const handlePaneClick = useCallback(() => {
+    selectNode(null);
+    setNodeMenu(null);
+  }, [selectNode]);
+  const handleNodeContextMenu = useCallback(
+    (event: React.MouseEvent, node: { id: string }) => {
+      event.preventDefault();
+      selectNode(node.id);
+      setNodeMenu({ id: node.id, x: event.clientX, y: event.clientY });
+    },
+    [selectNode]
+  );
 
   return (
     <div className="app">
@@ -85,7 +101,9 @@ const App = () => {
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onNodeClick={handleSelect}
+            onNodeContextMenu={handleNodeContextMenu}
             onPaneClick={handlePaneClick}
+            onMove={() => setNodeMenu(null)}
             connectionMode={ConnectionMode.Loose}
             snapToGrid={!shiftHeld}
             snapGrid={[GRID_MAJOR, GRID_MAJOR]}
@@ -114,6 +132,31 @@ const App = () => {
         </div>
         <Inspector />
       </div>
+      {nodeMenu && (
+        <div
+          className="context-menu"
+          style={{ left: nodeMenu.x, top: nodeMenu.y }}
+          onContextMenu={(e) => e.preventDefault()}
+        >
+          <button
+            onClick={() => {
+              duplicatePerk(nodeMenu.id);
+              setNodeMenu(null);
+            }}
+          >
+            Duplicate
+          </button>
+          <button
+            className="danger"
+            onClick={() => {
+              deletePerk(nodeMenu.id);
+              setNodeMenu(null);
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      )}
     </div>
   );
 };

@@ -75,8 +75,6 @@ const attributeField = (key: string) =>
 const modeField = (mode: number) =>
   MODIFIER_MODES.find((m) => m.mode === mode)?.field ?? "ADDITION";
 
-const categoryField = (name: string) => name.toUpperCase();
-
 const javaVar = (registry: string) => {
   const id = stripNs(registry).replace(/[^a-zA-Z0-9]/g, "_");
   return id.replace(/_(.)/g, (_, c) => c.toUpperCase()).replace(/^./, (c) => c.toLowerCase());
@@ -104,7 +102,6 @@ export const exportJava = (nodes: PerkNode[], edges: Edge[]): string => {
     const chunks: string[] = [];
     chunks.push(`        var ${varName} = PerkDataBuilder.builder(PerkTypesAS.${typeField(d.type)})`);
     chunks.push(`                .create(AstralSorcery.key("${id}"), ${xs}f, ${ys}f)`);
-    chunks.push(`                .setCategory(PerkCategory.${categoryField(d.category)})`);
     for (const req of d.requirements) {
       if (req.type === "astralsorcery:constellation") {
         chunks.push(`                .addRequirement(PerkRequirementConstellation.of(ConstellationsAS.${constellationField(req.constellation)}))`);

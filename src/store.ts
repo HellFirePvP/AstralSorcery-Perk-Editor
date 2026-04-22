@@ -23,6 +23,7 @@ type Store = {
   onConnect: (connection: Connection) => void;
   selectNode: (id: string | null) => void;
   addPerk: (typeKey: string, position: { x: number; y: number }) => void;
+  duplicatePerk: (id: string, position?: { x: number; y: number }) => void;
   updatePerk: (id: string, patch: Partial<PerkData>) => void;
   deletePerk: (id: string) => void;
   loadState: (nodes: PerkNode[], edges: Edge[]) => void;
@@ -86,6 +87,27 @@ export const useStore = create<Store>((set) => ({
       nodes: [...state.nodes, { id, type: "perk", position, data }],
       selectedNodeId: id,
     }));
+  },
+  duplicatePerk: (sourceId, position) => {
+    set((state) => {
+      const source = state.nodes.find((n) => n.id === sourceId);
+      if (!source) return state;
+      const id = genId("perk");
+      const suffix = genId("p").slice(-4);
+      const base = source.data.registry_name.replace(/_[a-z0-9]{4}$/i, "");
+      const registry_name = `${base}_${suffix}`;
+      const data: PerkData = {
+        ...source.data,
+        registry_name,
+        modifiers: source.data.modifiers.map((m) => ({ ...m, id: genId("mod") })),
+        requirements: source.data.requirements.map((r) => ({ ...r, id: genId("req") })),
+      };
+      const pos = position ?? { x: source.position.x + 60, y: source.position.y + 60 };
+      return {
+        nodes: [...state.nodes, { id, type: "perk", position: pos, data }],
+        selectedNodeId: id,
+      };
+    });
   },
   updatePerk: (id, patch) =>
     set((state) => ({
