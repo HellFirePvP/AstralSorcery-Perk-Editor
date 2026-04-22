@@ -11,7 +11,7 @@ type ExportView =
   | { kind: "lang"; source: string }
   | null;
 
-export const Toolbar = () => {
+export const Toolbar = ({ snapOn }: { snapOn: boolean }) => {
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
   const loadState = useStore((s) => s.loadState);
@@ -60,6 +60,9 @@ export const Toolbar = () => {
       <div className="toolbar">
         <span className="title">Astral Perk Editor</span>
         <span className="stat">{nodes.length} perks · {edges.length} links</span>
+        <span className={snapOn ? "stat snap-on" : "stat snap-off"}>
+          grid: {snapOn ? "on" : "free (shift)"}
+        </span>
         <div className="spacer" />
         <button
           onClick={() => {

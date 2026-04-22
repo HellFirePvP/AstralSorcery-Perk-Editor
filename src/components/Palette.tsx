@@ -14,8 +14,9 @@ export const Palette = () => {
   }, []);
 
   const handleAdd = (key: string) => {
-    const x = 200 + Math.random() * 400;
-    const y = 150 + Math.random() * 300;
+    const cell = 100;
+    const x = (2 + Math.floor(Math.random() * 5)) * cell;
+    const y = (1 + Math.floor(Math.random() * 4)) * cell;
     addPerk(key, { x, y });
   };
 

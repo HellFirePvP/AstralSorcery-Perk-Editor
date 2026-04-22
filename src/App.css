@@ -37,6 +37,14 @@ html, body, #root {
   font-size: 12px;
 }
 
+.toolbar .snap-on {
+  color: #7ac292;
+}
+
+.toolbar .snap-off {
+  color: #e9d99a;
+}
+
 .toolbar .spacer {
   flex: 1;
 }

@@ -31,14 +31,19 @@ export const PerkNode = ({ data, selected }: NodeProps<PerkData>) => {
       }}
     >
       <Handle
-        type="target"
-        position={Position.Top}
-        style={{ background: "transparent", border: "none", width: size, height: size, left: 0, top: 0, transform: "none" }}
-      />
-      <Handle
         type="source"
-        position={Position.Bottom}
-        style={{ background: "transparent", border: "none", width: size, height: size, left: 0, top: 0, transform: "none" }}
+        position={Position.Top}
+        style={{
+          background: "transparent",
+          border: "none",
+          width: size,
+          height: size,
+          top: size / 2,
+          left: size / 2,
+          transform: "translate(-50%, -50%)",
+          borderRadius: "50%",
+          zIndex: 1,
+        }}
       />
       <svg width={size} height={size} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         {constColor && (
