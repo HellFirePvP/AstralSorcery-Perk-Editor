@@ -33,17 +33,8 @@ export const PerkNode = ({ data, selected }: NodeProps<PerkData>) => {
       <Handle
         type="source"
         position={Position.Top}
-        style={{
-          background: "transparent",
-          border: "none",
-          width: size,
-          height: size,
-          top: size / 2,
-          left: size / 2,
-          transform: "translate(-50%, -50%)",
-          borderRadius: "50%",
-          zIndex: 1,
-        }}
+        className="perk-handle"
+        style={{ ["--perk-hit-size" as string]: `${2 * r}px` } as React.CSSProperties}
       />
       <svg width={size} height={size} style={{ position: "absolute", inset: 0, pointerEvents: "none" }}>
         {constColor && (

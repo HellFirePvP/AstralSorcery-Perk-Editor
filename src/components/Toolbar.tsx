@@ -15,9 +15,11 @@ export const Toolbar = ({ snapOn }: { snapOn: boolean }) => {
   const nodes = useStore((s) => s.nodes);
   const edges = useStore((s) => s.edges);
   const loadState = useStore((s) => s.loadState);
+  const updatePerk = useStore((s) => s.updatePerk);
   const [view, setView] = useState<ExportView>(null);
   const [activeFile, setActiveFile] = useState(0);
   const fileInput = useRef<HTMLInputElement>(null);
+  const langInput = useRef<HTMLInputElement>(null);
 
   const downloadProject = () => {
     const data = exportProject(nodes, edges);
@@ -53,6 +55,36 @@ export const Toolbar = ({ snapOn }: { snapOn: boolean }) => {
     }
   };
 
+  const importLang = async (file: File) => {
+    const text = await file.text();
+    try {
+      const parsed: unknown = JSON.parse(text);
+      if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) {
+        throw new Error("expected a JSON object at the root");
+      }
+      const dict = parsed as Record<string, unknown>;
+      let filled = 0;
+      let skipped = 0;
+      for (const node of nodes) {
+        const base = node.data.name_key;
+        const nameVal = dict[`${base}.name`];
+        const descVal = dict[`${base}.description`];
+        const patch: { display_name?: string; description?: string } = {};
+        if (typeof nameVal === "string") patch.display_name = nameVal;
+        if (typeof descVal === "string") patch.description = descVal;
+        if (patch.display_name !== undefined || patch.description !== undefined) {
+          updatePerk(node.id, patch);
+          filled += 1;
+        } else {
+          skipped += 1;
+        }
+      }
+      alert(`Imported keys for ${filled} perk(s). ${skipped} had no matching keys.`);
+    } catch (err) {
+      alert(`Failed to import en_us.json: ${String(err)}`);
+    }
+  };
+
   const copy = (text: string) => navigator.clipboard.writeText(text);
 
   return (
@@ -78,6 +110,7 @@ export const Toolbar = ({ snapOn }: { snapOn: boolean }) => {
         <button onClick={() => setView({ kind: "lang", source: exportLang(nodes) })}>
           Export en_us.json
         </button>
+        <button onClick={() => langInput.current?.click()}>Import en_us.json</button>
         <button onClick={downloadProject}>Save project</button>
         <button onClick={() => fileInput.current?.click()}>Load project</button>
         <input
@@ -88,6 +121,17 @@ export const Toolbar = ({ snapOn }: { snapOn: boolean }) => {
           onChange={(e) => {
             const f = e.target.files?.[0];
             if (f) loadProject(f);
+            e.target.value = "";
+          }}
+        />
+        <input
+          ref={langInput}
+          type="file"
+          accept="application/json"
+          style={{ display: "none" }}
+          onChange={(e) => {
+            const f = e.target.files?.[0];
+            if (f) importLang(f);
             e.target.value = "";
           }}
         />
