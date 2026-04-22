@@ -109,6 +109,8 @@ const App = () => {
             snapGrid={[GRID_MAJOR, GRID_MAJOR]}
             connectionLineStyle={{ stroke: "#8ab4ff" }}
             defaultEdgeOptions={{ type: "straight", style: { stroke: "#8ab4ff", strokeWidth: 1.5 } }}
+            minZoom={0.05}
+            maxZoom={3}
             fitView
           >
             <Background
